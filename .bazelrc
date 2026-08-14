@@ -21,5 +21,10 @@ build --proto_compiler=@com_google_protobuf//:protoc
 build --cxxopt="-Iexternal/com_google_protobuf/src"
 build --host_cxxopt="-Iexternal/com_google_protobuf/src"
 
+build:macos --apple_platform_type=macos
+build:macos --repo_env=BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+build:macos_arm64 --cpu=darwin_arm64
+build:macos_arm64 --repo_env=BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+
 # Disable Bzlmod to avoid conflicts with WORKSPACE
 common --noenable_bzlmod

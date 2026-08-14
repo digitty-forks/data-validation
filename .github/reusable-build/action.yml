@@ -12,21 +12,23 @@ runs:
   using: 'composite'
   steps:
   - name: Set up Python ${{ inputs.python-version }}
-    uses: actions/setup-python@v5
+    uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
     with:
       python-version: ${{ inputs.python-version }}
 
-  - name: Build the package for Python ${{ inputs.python-version }}
+  - name: Build the package for Python
     shell: bash
+    env:
+      PYTHON_VERSION: ${{ inputs.python-version }}
     run: |
-      version="${{ matrix.python-version }}"
+      version="$PYTHON_VERSION"
       docker compose run -e PYTHON_VERSION=$(echo "$version" | sed 's/\.//') manylinux2010
 
-  - name: Upload wheel artifact for Python ${{ matrix.python-version }}
+  - name: Upload wheel artifact
     if: ${{ inputs.upload-artifact == 'true' }}
-    uses: actions/upload-artifact@v4
+    uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
     with:
-      name: data-validation-wheel-py${{ matrix.python-version }}
+      name: data-validation-wheel-py${{ inputs.python-version }}
       path: dist/*.whl
 
   - name: Check the wheel
